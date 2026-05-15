@@ -38,10 +38,10 @@ WORKDIR /var/www/html
 COPY . .
 
 # Install Laravel dependencies
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Install Node dependencies and build assets
-RUN npm install
+RUN npm install --no-audit --no-fund
 RUN npm run build
 
 # Enable Apache rewrite module
@@ -50,6 +50,7 @@ RUN a2enmod rewrite
 # Set Apache document root
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
+# Update Apache config
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
     /etc/apache2/sites-available/*.conf
 
@@ -57,25 +58,26 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' \
     /etc/apache2/apache2.conf \
     /etc/apache2/conf-available/*.conf
 
-# Create Laravel log file
-RUN mkdir -p storage/logs
-RUN touch storage/logs/laravel.log
+# Create Laravel directories
+RUN mkdir -p storage/framework/sessions \
+    storage/framework/views \
+    storage/framework/cache \
+    storage/logs \
+    bootstrap/cache
 
 # Fix permissions
-RUN chown -R www-data:www-data storage bootstrap/cache
-RUN chmod -R 775 storage bootstrap/cache
-RUN chmod -R 775 storage/logs
+RUN chown -R www-data:www-data /var/www/html
+
+RUN chmod -R 775 storage
+RUN chmod -R 775 bootstrap/cache
+
+RUN touch storage/logs/laravel.log
+RUN chmod 775 storage/logs/laravel.log
 
 # Public assets permissions
 RUN chmod -R 755 public
 
-# Clear and cache Laravel config
-RUN php artisan optimize:clear || true
-RUN php artisan config:cache || true
-RUN php artisan route:cache || true
-RUN php artisan view:cache || true
-
 EXPOSE 80
 
-# Start Laravel + Apache
+# Start Laravel
 CMD sh -c "php artisan migrate --force && apache2-foreground"
