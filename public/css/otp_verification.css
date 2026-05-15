@@ -1,0 +1,297 @@
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(125deg, #fff7ef 0%, #fef0e2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ========= SOFT NATURE BACKGROUND ========= */
+        .soft-nature-bg {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 55%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            background-image: url('https://images.pexels.com/photos/1118873/beautiful-nature-scenery-with-mountains-and-flowers-1118873.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+            background-size: cover;
+            background-position: center right;
+            opacity: 0.2;
+            border-radius: 80px 0 0 80px;
+        }
+
+        .nature-accent {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 280px;
+            height: 280px;
+            background: radial-gradient(circle, rgba(245, 212, 176, 0.3) 0%, rgba(252, 226, 192, 0.1) 80%);
+            border-radius: 70% 30% 60% 40%;
+            filter: blur(45px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .petal-float {
+            position: fixed;
+            top: 15%;
+            right: 8%;
+            font-size: 3.2rem;
+            opacity: 0.35;
+            pointer-events: none;
+            animation: softDrift 12s infinite alternate;
+            z-index: 0;
+        }
+
+        @keyframes softDrift {
+            0% { transform: translateY(0px) rotate(0deg); opacity: 0.25; }
+            100% { transform: translateY(-25px) rotate(6deg); opacity: 0.5; }
+        }
+
+        /* main OTP container */
+        .otp-container {
+            max-width: 550px;
+            width: 100%;
+            background: rgba(255, 251, 245, 0.9);
+            backdrop-filter: blur(12px);
+            border-radius: 64px;
+            box-shadow: 0 30px 55px rgba(88, 57, 39, 0.12), 0 0 0 1px rgba(255, 245, 225, 0.8);
+            overflow: hidden;
+            z-index: 2;
+            padding: 48px 40px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        /* header with joyful badge */
+        .otp-badge {
+            display: inline-block;
+            background: #ffede0;
+            padding: 6px 20px;
+            border-radius: 80px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #b96f47;
+            margin-bottom: 20px;
+            border: 1px solid #ffddc2;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(125deg, #cf8b62, #b26b44);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 12px;
+        }
+
+        .sub-message {
+            color: #8c6a4f;
+            font-size: 0.95rem;
+            margin-bottom: 32px;
+        }
+
+        .email-display {
+            background: #fff5ea;
+            border-radius: 60px;
+            padding: 12px 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 28px;
+            font-weight: 600;
+            color: #7a553b;
+            border: 1px solid #ffe0ca;
+        }
+
+        .email-display i {
+            color: #e7a06e;
+            font-size: 1.2rem;
+        }
+
+        /* OTP input fields */
+        .otp-input-group {
+            margin: 24px 0;
+        }
+
+        .otp-fields {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .otp-digit {
+            width: 65px;
+            height: 70px;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: 'Quicksand', monospace;
+            background: #fffcf5;
+            border: 2px solid #ffe0ca;
+            border-radius: 24px;
+            color: #5a3e2c;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .otp-digit:focus {
+            border-color: #e7b386;
+            box-shadow: 0 0 0 3px rgba(231, 179, 134, 0.2);
+            background: #ffffff;
+        }
+
+        /* timer & resend */
+        .timer-section {
+            margin: 16px 0;
+            font-size: 0.85rem;
+            color: #b37c58;
+        }
+
+        .resend-btn {
+            background: none;
+            border: none;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            color: #cb7b4a;
+            cursor: pointer;
+            font-size: 0.85rem;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+
+        .resend-btn:hover {
+            color: #9a5530;
+        }
+
+        .verify-btn {
+            background: #f2bb91;
+            border: none;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding: 14px 24px;
+            border-radius: 60px;
+            color: #442f1f;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 100%;
+            margin-top: 20px;
+            box-shadow: 0 8px 18px rgba(167, 101, 52, 0.1);
+        }
+
+        .verify-btn:hover {
+            background: #ffb37c;
+            transform: translateY(-2px);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 24px;
+            color: #b37c58;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            color: #9a5530;
+        }
+
+        /* emoji floating row */
+        .emoji-row {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            margin: 24px 0 12px;
+            font-size: 1.8rem;
+            opacity: 0.6;
+        }
+
+        /* success / error message */
+        .message-box {
+            margin-top: 16px;
+            padding: 10px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .message-box.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .message-box.error {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .message-box.info {
+            background: #fff3e0;
+            color: #bf6f3c;
+        }
+
+        /* responsive */
+        @media (max-width: 550px) {
+            .otp-container {
+                padding: 36px 24px;
+            }
+            .otp-digit {
+                width: 55px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+        .otp-fields {
+    display: flex;
+    justify-content: center;
+    margin: 25px 0;
+}
+
+.otp-digit {
+    width: 220px;
+    height: 60px;
+    border: 2px solid #f2d4c2;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.7);
+    text-align: center;
+    font-size: 1.5rem;
+    font-family: 'Quicksand', sans-serif;
+    color: #9c6b4f;
+    outline: none;
+    transition: 0.3s ease;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 12px rgba(255, 192, 203, 0.15);
+}
+
+.otp-digit:focus {
+    border-color: #e7a97f;
+    box-shadow: 0 0 12px rgba(231, 169, 127, 0.4);
+    transform: scale(1.03);
+}
+
+.otp-digit::placeholder {
+    color: #d3a78c;
+}
+    

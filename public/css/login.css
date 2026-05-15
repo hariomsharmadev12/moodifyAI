@@ -1,0 +1,369 @@
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(125deg, #fff7ef 0%, #fef0e2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ========= SOFT NATURE BACKGROUND (right side + overall nature vibes) ========= */
+        .soft-nature-bg {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 55%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            background-image: url('https://images.pexels.com/photos/1118873/beautiful-nature-scenery-with-mountains-and-flowers-1118873.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+            background-size: cover;
+            background-position: center right;
+            opacity: 0.2;
+            border-radius: 80px 0 0 80px;
+            filter: brightness(1.02) saturate(0.95);
+        }
+
+        /* extra floating soft nature shapes / petals (right corner accent) */
+        .nature-accent {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 280px;
+            height: 280px;
+            background: radial-gradient(circle, rgba(245, 212, 176, 0.3) 0%, rgba(252, 226, 192, 0.1) 80%);
+            border-radius: 70% 30% 60% 40%;
+            filter: blur(45px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .petal-float {
+            position: fixed;
+            top: 15%;
+            right: 8%;
+            font-size: 3.2rem;
+            opacity: 0.35;
+            pointer-events: none;
+            animation: softDrift 12s infinite alternate;
+            z-index: 0;
+        }
+
+        @keyframes softDrift {
+            0% { transform: translateY(0px) rotate(0deg); opacity: 0.25; }
+            100% { transform: translateY(-25px) rotate(6deg); opacity: 0.5; }
+        }
+
+        /* main card container: left side = joyful images/text/emojis , right side = login form */
+        .login-container {
+            max-width: 1280px;
+            width: 100%;
+            background: rgba(255, 251, 245, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 64px;
+            box-shadow: 0 30px 55px rgba(88, 57, 39, 0.12), 0 0 0 1px rgba(255, 245, 225, 0.8);
+            overflow: hidden;
+            display: flex;
+            flex-wrap: wrap;
+            z-index: 2;
+            transition: all 0.2s ease;
+        }
+
+        /* LEFT PANEL: joyful images, emojis, kdrama / gf-bf vibes, text */
+        .left-joy-panel {
+            flex: 1.2;
+            background: rgba(253, 243, 227, 0.7);
+            padding: 40px 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 28px;
+            border-radius: 48px 0 0 48px;
+            backdrop-filter: blur(4px);
+        }
+
+        .emoji-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .big-emoji {
+            font-size: 3.4rem;
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.08));
+            transition: transform 0.2s ease;
+            display: inline-block;
+        }
+
+        .big-emoji:hover {
+            transform: scale(1.05);
+        }
+
+        .romantic-couple {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            background: rgba(255, 235, 215, 0.7);
+            border-radius: 100px;
+            padding: 12px 20px;
+            margin: 10px 0;
+        }
+
+        .couple-img-placeholder {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            background: #fff1e2;
+            padding: 6px 20px;
+            border-radius: 60px;
+        }
+
+        /* feel-good image links (free stock images from pexels, all happy & soft) */
+        .gd-image {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ffe2c9;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+        }
+
+        .gd-image:hover {
+            transform: scale(1.02);
+            border-color: #ffbf91;
+        }
+
+        .korean-drama-text {
+            font-weight: 600;
+            font-size: 1rem;
+            background: #ffffffb3;
+            border-radius: 60px;
+            padding: 5px 18px;
+            display: inline-block;
+            margin-top: 6px;
+            color: #b7582c;
+        }
+
+        .inspiring-quote {
+            font-size: 1.4rem;
+            font-weight: 600;
+            line-height: 1.3;
+            color: #5c3a26;
+            background: rgba(255, 249, 235, 0.9);
+            padding: 16px 20px;
+            border-radius: 48px;
+            text-align: center;
+        }
+
+        .music-platform-badge {
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+            margin-top: 12px;
+            font-size: 1.8rem;
+            color: #b8865b;
+        }
+
+        /* RIGHT PANEL: Login form */
+        .right-form-panel {
+            flex: 1;
+            padding: 48px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-header {
+            margin-bottom: 28px;
+        }
+
+        .form-header h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(125deg, #cf8b62, #b26b44);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+
+        .form-header p {
+            color: #8c6a4f;
+            font-weight: 500;
+            margin-top: 8px;
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            color: #7c5a40;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            margin-left: 12px;
+        }
+
+        .input-group input {
+            font-family: 'Quicksand', sans-serif;
+            background: #fffcf5;
+            border: 1.5px solid #ffe0ca;
+            border-radius: 60px;
+            padding: 14px 20px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.2s;
+            color: #392c21;
+            font-weight: 500;
+        }
+
+        .input-group input:focus {
+            border-color: #e7b386;
+            box-shadow: 0 0 0 3px rgba(231, 179, 134, 0.2);
+            background: #ffffff;
+        }
+
+        .checkbox-group {
+            flex-direction: row;
+            align-items: center;
+            gap: 12px;
+            margin: 8px 0 12px;
+        }
+
+        .checkbox-group input {
+            width: 18px;
+            height: 18px;
+            accent-color: #d9966e;
+        }
+
+        .login-btn {
+            background: #f2bb91;
+            border: none;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding: 14px 24px;
+            border-radius: 60px;
+            color: #442f1f;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 12px;
+            width: 100%;
+            box-shadow: 0 8px 18px rgba(167, 101, 52, 0.1);
+        }
+
+        .login-btn:hover {
+            background: #ffb37c;
+            transform: translateY(-2px);
+            box-shadow: 0 14px 22px rgba(139, 80, 34, 0.15);
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: 8px;
+            font-size: 0.75rem;
+        }
+
+        .forgot-password a {
+            color: #b37c58;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .forgot-password a:hover {
+            color: #9a5530;
+            text-decoration: underline;
+        }
+
+        .signup-redirect {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 0.85rem;
+            color: #b37c58;
+        }
+
+        .signup-redirect a {
+            color: #cb7b4a;
+            font-weight: 700;
+            text-decoration: none;
+            border-bottom: 1px dashed #efbc92;
+        }
+
+        .signup-redirect a:hover {
+            color: #9a5530;
+        }
+
+        /* extra emoji line */
+        .floating-heart-emojis {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 18px;
+            font-size: 1.3rem;
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 880px) {
+            .login-container {
+                flex-direction: column;
+                border-radius: 48px;
+            }
+            .left-joy-panel {
+                border-radius: 48px 48px 0 0;
+                padding: 32px 20px;
+                text-align: center;
+            }
+            .right-form-panel {
+                padding: 36px 28px;
+            }
+            .soft-nature-bg {
+                width: 80%;
+                opacity: 0.15;
+            }
+            .inspiring-quote {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* image gallery styles */
+        .img-gallery {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 10px 0;
+        }
+
+        .small-img-card {
+            background: white;
+            border-radius: 40px;
+            padding: 6px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.03);
+        }
+
+        /* demo message (no real backend) */
+        .demo-note {
+            font-size: 0.7rem;
+            text-align: center;
+            margin-top: 20px;
+            color: #c89a78;
+        }
