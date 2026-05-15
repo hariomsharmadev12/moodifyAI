@@ -37,4 +37,4 @@ RUN chmod -R 777 storage bootstrap/cache
 
 EXPOSE 80
 
-CMD php artisan migrate --force && apache2-foreground
+CMD sh -c "php artisan migrate --force && apache2-foreground"
