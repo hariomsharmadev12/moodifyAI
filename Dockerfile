@@ -10,9 +10,12 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
-    libonig-dev
+    libonig-dev \
+    nodejs \
+    npm
 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+
 RUN docker-php-ext-install \
     pdo \
     pdo_mysql \
@@ -31,6 +34,9 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 
+RUN npm install
+RUN npm run build
+
 RUN a2enmod rewrite
 
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
@@ -41,15 +47,10 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' \
     /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# Fix permissions for CSS/JS files
 RUN chmod -R 755 public
-RUN find public -type f -name "*.css" -exec chmod 644 {} \;
-RUN find public -type f -name "*.js" -exec chmod 644 {} \;
 RUN chmod -R 777 storage bootstrap/cache
 
-# Cache Laravel assets (optional but helpful)
-RUN php artisan view:cache || true
-RUN php artisan config:cache || true
+RUN php artisan optimize:clear || true
 
 EXPOSE 80
 
