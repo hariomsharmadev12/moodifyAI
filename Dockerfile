@@ -30,7 +30,6 @@ RUN docker-php-ext-install \
     mbstring \
     exif \
     xml \
-    session \
     tokenizer \
     fileinfo
 

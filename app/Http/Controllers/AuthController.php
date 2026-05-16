@@ -39,6 +39,7 @@ class AuthController extends Controller
         // Store user data and OTP in session (DON'T create user yet)
         session([
             'otp' => $otp,
+            'otp_email' => $request->email,
             'temp_user_data' => [
                 'name' => $request->name,
                 'email' => $request->email,
