@@ -64,7 +64,7 @@ RUN a2enmod rewrite
 # FIX: disable extra MPM and keep prefork only
 RUN a2dismod mpm_event || true
 RUN a2dismod mpm_worker || true
-RUN a2enmod mpm_prefork
+
 
 # Configure Apache document root
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
