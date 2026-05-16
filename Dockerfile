@@ -13,20 +13,23 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     libonig-dev \
     nodejs \
-    npm
+    npm \
+    libxml2-dev \
+    libsqlite3-dev
 
 # Enable PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
-
 RUN docker-php-ext-install \
-    pdo \
     pdo_mysql \
     pdo_pgsql \
-    pgsql \
     zip \
     gd \
     mbstring \
-    exif
+    exif \
+    xml \
+    session \
+    tokenizer \
+    fileinfo
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -37,47 +40,39 @@ WORKDIR /var/www/html
 # Copy project files
 COPY . .
 
-# Install Laravel dependencies
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+# Install dependencies
+RUN composer install --no-interaction --optimize-autoloader
+RUN npm install && npm run build || true
 
-# Install Node dependencies and build assets
-RUN npm install --no-audit --no-fund
-RUN npm run build
-
-# Enable Apache rewrite module
-RUN a2enmod rewrite
-
-# Set Apache document root
-ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
-
-# Update Apache config
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
-    /etc/apache2/sites-available/*.conf
-
-RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' \
-    /etc/apache2/apache2.conf \
-    /etc/apache2/conf-available/*.conf
-
-# Create Laravel directories
+# Create storage directories
 RUN mkdir -p storage/framework/sessions \
     storage/framework/views \
     storage/framework/cache \
     storage/logs \
     bootstrap/cache
 
-# Fix permissions
-RUN chown -R www-data:www-data /var/www/html
+# Set permissions
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 storage \
+    && chmod -R 775 bootstrap/cache \
+    && chmod -R 755 public
 
-RUN chmod -R 775 storage
-RUN chmod -R 775 bootstrap/cache
+# Enable Apache rewrite
+RUN a2enmod rewrite
 
-RUN touch storage/logs/laravel.log
-RUN chmod 775 storage/logs/laravel.log
+# Configure Apache
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
+    /etc/apache2/sites-available/*.conf
 
-# Public assets permissions
-RUN chmod -R 755 public
+# Clear any cached config (will be regenerated at runtime)
+RUN php artisan config:clear || true
+RUN php artisan cache:clear || true
 
 EXPOSE 80
 
-# Start Laravel
-CMD sh -c "php artisan migrate --force && apache2-foreground"
+# Startup script
+CMD sh -c "php artisan key:generate --force && \
+           php artisan config:cache && \
+           php artisan migrate --force && \
+           apache2-foreground"ce && apache2-foreground"

@@ -33,32 +33,30 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        // Create a new user
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        // Generate OTP
         $otp = rand(100000, 999999);
-    session(['otp' => $otp, 'otp_email' => $request->email, 'user_id' => $user->id]);
 
+        // Store user data and OTP in session (DON'T create user yet)
+        session([
+            'otp' => $otp,
+            'temp_user_data' => [
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]
+        ]);
+
+        // Send OTP email
         Mail::raw("Your OTP for registration is: $otp", function ($message) use ($request) {
             $message->to($request->email)
                 ->subject('OTP Verification for Registration');
         });
 
-        Log::info("OTP sent for user: {$user->email}, OTP: {$otp}");
+        Log::info("OTP sent for email: {$request->email}, OTP: {$otp}");
 
-        return redirect()->route('otp_verification');
-    
-        
-       
-
-    
-    
-
+        return redirect()->route('otp_verification')->with('success', 'OTP sent to your email!');
     }
-    
+
     public function login(Request $request)
     {
         // Validate the request data
@@ -87,6 +85,36 @@ class AuthController extends Controller
         Auth::logout();
         return redirect()->route('frontpage');
     }
-  
-}
+    public function verifyOtp(Request $request)
+    {
+        $request->validate([
+            'otp' => 'required|string|size:6',
+        ]);
 
+        if (!session()->has('otp') || !session()->has('temp_user_data')) {
+            return redirect()->route('signup')->with('error', 'Session expired. Please sign up again.');
+        }
+
+        $inputOtp = $request->input('otp');
+        $sessionOtp = session('otp');
+        $tempUserData = session('temp_user_data');
+
+        if ($inputOtp == $sessionOtp) {
+            // NOW create the user
+            $user = User::create([
+                'name' => $tempUserData['name'],
+                'email' => $tempUserData['email'],
+                'password' => $tempUserData['password'],
+            ]);
+
+            Auth::login($user);
+
+            // Clear session data
+            session()->forget(['otp', 'temp_user_data']);
+
+            return redirect()->route('dashboard')->with('success', 'OTP verified successfully!');
+        } else {
+            return redirect()->route('otp_verification')->with('error', 'Invalid OTP. Please try again.');
+        }
+    }
+}
