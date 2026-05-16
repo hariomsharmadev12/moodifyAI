@@ -61,11 +61,8 @@ RUN npm install --no-audit --no-fund && npm run build || true
 # Apache rewrite
 RUN a2enmod rewrite
 
-# Fix Apache MPM conflict
-RUN rm -f /etc/apache2/mods-enabled/mpm_event.load
-RUN rm -f /etc/apache2/mods-enabled/mpm_event.conf
-RUN a2enmod mpm_prefork
-
+# Fix Apache MPM conflict cleanly
+RUN a2dismod mpm_event && a2enmod mpm_prefork
 
 # Configure Apache document root
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
