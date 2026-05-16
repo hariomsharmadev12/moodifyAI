@@ -29,9 +29,8 @@ RUN docker-php-ext-install \
     gd \
     mbstring \
     exif \
-    xml \
-    tokenizer \
-    fileinfo
+    xml 
+   
 
 # Install Composer
 COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
