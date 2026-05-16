@@ -61,9 +61,10 @@ RUN npm install --no-audit --no-fund && npm run build || true
 # Apache rewrite
 RUN a2enmod rewrite
 
-# FIX: disable extra MPM and keep prefork only
-RUN a2dismod mpm_event || true
-RUN a2dismod mpm_worker || true
+# Fix Apache MPM conflict
+RUN rm -f /etc/apache2/mods-enabled/mpm_event.load
+RUN rm -f /etc/apache2/mods-enabled/mpm_event.conf
+RUN a2enmod mpm_prefork
 
 
 # Configure Apache document root
