@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OtpMail;
 use Illuminate\Support\Facades\Log;
@@ -48,10 +49,29 @@ class AuthController extends Controller
         ]);
 
         // Send OTP email
-        Mail::raw("Your OTP for registration is: $otp", function ($message) use ($request) {
-            $message->to($request->email)
-                ->subject('OTP Verification for Registration');
-        });
+        Http::withHeaders([
+            'accept' => 'application/json',
+            'api-key' => env('BREVO_API_KEY'),
+            'content-type' => 'application/json',
+        ])->post('https://api.brevo.com/v3/smtp/email', [
+
+            'sender' => [
+                'name' => 'Moodify',
+                'email' => 'hariomsharmasvs@gmail.com',
+            ],
+
+            'to' => [
+                [
+                    'email' => $request->email,
+                ]
+            ],
+
+            'subject' => 'OTP Verification for Registration',
+
+            'htmlContent' => "
+        <h2>Your OTP is: $otp</h2>
+    ",
+        ]);
 
         Log::info("OTP sent for email: {$request->email}, OTP: {$otp}");
 
